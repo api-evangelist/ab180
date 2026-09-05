@@ -1,0 +1,134 @@
+generated: '2026-09-05'
+method: searched
+source: 'Registry metadata endpoints (registry.npmjs.org, pub.dev API, trunk.cocoapods.org,
+  api.github.com) plus the Airbridge SDK installation docs at help.airbridge.io and the
+  provider-operated Maven repository at https://sdk-download.airbridge.io/maven'
+note: 'Airbridge ships eleven SDK platforms. Client libraries are distributed across npm,
+  pub.dev, CocoaPods, Swift Package Manager, GitHub tags and a first-party Maven
+  repository — Airbridge publishes NOTHING to Maven Central (a search of g:io.airbridge
+  and a:airbridge* returns 0 results), so the Android artifact is only resolvable after
+  the consumer adds https://sdk-download.airbridge.io/maven to their repositories block.'
+packages:
+- language: javascript
+  registry: npm
+  name: airbridge-web-sdk-loader
+  url: https://www.npmjs.com/package/airbridge-web-sdk-loader
+  install: npm install airbridge-web-sdk-loader
+  official: true
+  version: 1.11.3
+  published: '2026-08-25'
+  docs: https://help.airbridge.io/en/developers/web-sdk
+- language: javascript
+  registry: npm
+  name: airbridge-react-native-sdk
+  url: https://www.npmjs.com/package/airbridge-react-native-sdk
+  install: npm install airbridge-react-native-sdk
+  official: true
+  version: 4.10.0
+  published: '2026-07-09'
+  docs: https://help.airbridge.io/en/developers/react-native-sdk-v4
+- language: javascript
+  registry: npm
+  name: airbridge-expo-sdk
+  url: https://www.npmjs.com/package/airbridge-expo-sdk
+  install: npm install airbridge-expo-sdk
+  official: true
+  version: 4.10.0
+  published: '2026-07-20'
+  docs: https://help.airbridge.io/en/developers/expo-sdk-v4
+- language: javascript
+  registry: npm
+  name: airbridge-cordova-sdk
+  url: https://www.npmjs.com/package/airbridge-cordova-sdk
+  install: npm install airbridge-cordova-sdk
+  official: true
+  version: 4.4.2
+  published: '2026-08-13'
+  docs: https://help.airbridge.io/en/developers/cordova-sdk-v4
+- language: dart
+  registry: pub.dev
+  name: airbridge_flutter_sdk
+  url: https://pub.dev/packages/airbridge_flutter_sdk
+  install: flutter pub add airbridge_flutter_sdk
+  official: true
+  version: 4.10.0
+  published: '2026-07-09'
+  docs: https://help.airbridge.io/en/developers/flutter-sdk-v4
+- language: kotlin
+  registry: maven
+  name: io.airbridge:sdk-android
+  url: https://sdk-download.airbridge.io/maven/io/airbridge/sdk-android/index.html
+  install: implementation("io.airbridge:sdk-android:4.11.3")
+  official: true
+  version: 4.11.3
+  published: '2026-09-03'
+  published_source: 'lastUpdated 20260903083113 in https://sdk-download.airbridge.io/maven/io/airbridge/sdk-android/maven-metadata.xml'
+  repository: https://sdk-download.airbridge.io/maven
+  docs: https://help.airbridge.io/en/developers/android-sdk-v4
+  note: 'Not on Maven Central. Consumers must declare the provider-operated Maven
+    repository explicitly.'
+- language: swift
+  registry: cocoapods
+  name: airbridge-ios-sdk
+  url: https://cocoapods.org/pods/airbridge-ios-sdk
+  install: pod 'airbridge-ios-sdk'
+  official: true
+  version: 4.9.4
+  published: '2026-04-27'
+  docs: https://help.airbridge.io/en/developers/ios-sdk-v4
+  note: 'CURRENCY GAP: the CocoaPods trunk (owner AB180) is four releases behind the Swift
+    Package Manager distribution, which is at 4.11.1 (2026-09-03). A CocoaPods consumer
+    pinning the trunk latest gets a build from April 2026.'
+- language: swift
+  registry: swift-package-manager
+  name: airbridge-ios-sdk-deployment
+  url: https://github.com/ab180/airbridge-ios-sdk-deployment
+  install: '.package(url: "https://github.com/ab180/airbridge-ios-sdk-deployment", .exact("4.11.1"))'
+  official: true
+  version: 4.11.1
+  published: '2026-09-03'
+  published_source: 'git tag 4.11.1 commit date, api.github.com/repos/ab180/airbridge-ios-sdk-deployment'
+  docs: https://help.airbridge.io/en/developers/ios-sdk-v4
+- language: swift
+  registry: swift-package-manager
+  name: airbridge-ios-sdk-restricted-deployment
+  url: https://github.com/ab180/airbridge-ios-sdk-restricted-deployment
+  install: '.package(url: "https://github.com/ab180/airbridge-ios-sdk-restricted-deployment", .exact("4.11.1"))'
+  official: true
+  version: null
+  published: null
+  note: 'Restricted build that does not collect device IDs (GAID/IDFA). Version not read
+    from a registry — the repository is a binary distribution repo with no registry
+    metadata endpoint; the docs direct consumers to the shared iOS release note page.'
+  docs: https://help.airbridge.io/en/developers/ios-sdk-v4
+- language: csharp
+  registry: github
+  name: airbridge-unity-sdk-deployment
+  url: https://github.com/ab180/airbridge-unity-sdk-deployment
+  install: 'Unity Package Manager: add https://github.com/ab180/airbridge-unity-sdk-deployment'
+  official: true
+  version: 4.10.0
+  published: '2026-07-06'
+  published_source: 'GitHub release 4.10.0'
+  docs: https://help.airbridge.io/en/developers/unity-sdk-v4
+- language: swift
+  registry: swift-package-manager
+  name: airflux-ios-sdk-deployment
+  url: https://github.com/ab180/airflux-ios-sdk-deployment
+  official: true
+  version: 1.0.2
+  published: null
+  note: 'SDK for Airflux, AB180''s AI monetization product for mobile games. Latest git
+    tag is 1.0.2; the repository publishes no dated GitHub releases, so no publish date
+    could be read.'
+- language: cpp
+  registry: none
+  name: Airbridge Unreal SDK
+  url: https://help.airbridge.io/en/developers/unreal-sdk-v4
+  official: true
+  version: null
+  published: null
+  note: 'Distributed as a downloadable Unreal plugin from the Airbridge documentation, not
+    through a package registry. No registry metadata endpoint exists to query and the
+    download link is unpinned, so a consumer cannot tell which build they are getting
+    either.'

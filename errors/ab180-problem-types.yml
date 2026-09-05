@@ -1,0 +1,116 @@
+generated: '2026-09-05'
+method: searched
+format: rfc9457
+source: 'Airbridge API reference response examples at help.airbridge.io/en/references/*,
+  plus a live probe of https://api.airbridge.io/openapi.json which returned an RFC 9457
+  document with Content-Type application/problem+json (HTTP 404, fetched 2026-09-05).'
+envelope:
+  media_type: application/problem+json
+  observed_live: true
+  observed_at: https://api.airbridge.io/openapi.json
+  fields:
+  - name: type
+    description: 'Problem type URI. Airbridge emits the literal "about:blank" on every
+      documented example — no dereferenceable per-problem type URIs are published.'
+  - name: title
+    description: 'Short label. Inconsistent register across services: some responses use
+      an HTTP reason phrase ("Not Found", "Bad Request"), some a SCREAMING_SNAKE code
+      ("UNAUTHORIZED", "NOT_FOUND"), and some a lower_snake domain code
+      ("url_disabled_by_toggle", "invalid_request").'
+  - name: detail
+    description: Human-readable explanation of this occurrence.
+  - name: status
+    description: HTTP status code, repeated in the body.
+  - name: instance
+    description: 'Present but null in every published example.'
+  - name: traceId
+    description: 'RFC 9457 extension member. AWS X-Ray style trace identifier
+      (1-<hex>-<hex>) an operator can quote to Airbridge support.'
+  - name: errors
+    description: 'RFC 9457 extension member, validation failures only. Array of
+      {loc: [field], msg, type} entries.'
+legacy_envelope:
+  note: 'The Attribution Result API does NOT use problem+json. It returns a bare
+    {"result": "<message>"} object on both 400 and 401, an older envelope that predates
+    the problem-details rollout.'
+  source: https://help.airbridge.io/en/references/attribution-result/get-attribution-result
+  fields:
+  - name: result
+    description: Plain-text error message.
+problems:
+- status: 400
+  title: Bad Request
+  type: about:blank
+  detail: invalid_request
+  extensions: [errors, traceId]
+  meaning: 'Request validation failed. The errors[] array names the offending field, e.g.
+    loc ["size"], msg "must be less than or equal to 1000", type "validation_error".'
+  source_operation: https://help.airbridge.io/en/references/tracking-link/list-tracking-links
+- status: 400
+  title: Bad Request
+  type: about:blank
+  meaning: Malformed report query (date range, metric or groupBy rejected).
+  source_operation: https://help.airbridge.io/en/references/retention-report/request-report
+- status: 401
+  title: UNAUTHORIZED
+  type: about:blank
+  detail: Unauthorized.
+  meaning: 'Missing, malformed or revoked Authorization bearer token, or an api_key query
+    parameter that does not match. Regenerating a token in the dashboard revokes the old
+    one immediately.'
+  remediation: 'Reissue the token at [Settings] > [Tokens] in the Airbridge dashboard.'
+  source_operation: https://help.airbridge.io/en/references/skadnetwork-configuration/response-for-all-versions-of-skan
+- status: 401
+  envelope: legacy
+  body: '{"result": "invalid authorization header"}'
+  meaning: Attribution Result API rejected the Authorization header.
+  source_operation: https://help.airbridge.io/en/references/attribution-result/get-attribution-result
+- status: 400
+  envelope: legacy
+  body: '{"result": "Invalid device_uuid"}'
+  meaning: The device_uuid supplied to the Attribution Result API is not a valid identifier.
+  source_operation: https://help.airbridge.io/en/references/attribution-result/get-attribution-result
+- status: 404
+  title: NOT_FOUND
+  type: about:blank
+  detail: There is no such app. Please check.
+  meaning: The {app_name} path parameter does not name an app on this account.
+  source_operation: https://help.airbridge.io/en/references/skadnetwork-configuration/response-for-all-versions-of-skan
+- status: 404
+  title: url_disabled_by_toggle
+  type: about:blank
+  detail: URL has been disabled. Turn on the toggle button to reactivate.
+  meaning: 'The requested SKAdNetwork conversion-value schema URL has been switched off in
+    the dashboard.'
+  remediation: Re-enable the toggle in the Airbridge dashboard.
+  source_operation: https://help.airbridge.io/en/references/skadnetwork-configuration/response-for-all-versions-of-skan
+- status: 404
+  title: Not Found
+  type: about:blank
+  detail: 'The requested URL was not found on the server. If you entered the URL manually
+    please check your spelling and try again.'
+  meaning: Unknown path on api.airbridge.io.
+  observed: true
+  observed_at: https://api.airbridge.io/openapi.json
+- status: 404
+  title: Not Found
+  type: about:blank
+  meaning: 'Report task or export request id not found (task_id / report_id / request_id
+    does not exist or has expired).'
+  source_operation: https://help.airbridge.io/en/references/actuals-report/get-report
+- status: 429
+  title: Too Many Requests
+  meaning: 'Rate limit exhausted. Documented as temporary and applied when excessive
+    requests threaten service stability; see rate-limits/ab180-rate-limits.yml.'
+  source_operation: https://help.airbridge.io/en/references/actuals-report/request-report
+task_failure_states:
+  note: 'Asynchronous report and export jobs report failure in the 200 body, not as an
+    HTTP error. Poll status until it leaves RUNNING.'
+  states: [RUNNING, SUCCESS, FAILED, CANCELED]
+  source: https://help.airbridge.io/en/references/actuals-report/get-report
+gaps:
+- 'No consolidated error-code reference page is published; the catalog above is assembled
+  from per-endpoint response examples.'
+- 'type is always about:blank, so no problem-type URI is dereferenceable.'
+- 'Two envelopes coexist (problem+json and the legacy {"result": ...}), which an agent
+  must handle branch-wise.'

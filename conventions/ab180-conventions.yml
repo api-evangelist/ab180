@@ -1,0 +1,174 @@
+generated: '2026-09-05'
+method: searched
+source: 'https://help.airbridge.io/en/references/introduction plus every endpoint reference
+  page under https://help.airbridge.io/en/references/'
+note: 'No OpenAPI is published, so every convention below is read from the prose reference
+  and its request/response examples.'
+base_url: https://api.airbridge.io
+transport:
+  https_only: true
+  content_type: application/json; charset=utf-8
+  language_negotiation:
+    header: Accept-Language
+    format: ISO-639-1
+    note: Selects the language of API request and response text.
+authentication:
+  style: bearer-token
+  header: 'Authorization: Bearer {AIRBRIDGE-API-TOKEN}'
+  exception: 'The SKAdNetwork conversion-value schema endpoint takes api_key as a query
+    parameter instead.'
+  see: authentication/ab180-authentication.yml
+idempotency:
+  supported: true
+  coverage: partial
+  scope:
+  - Send In-app Events (POST /events/v2/apps/{app_name}/mobile-app/9360)
+  - Send In-web Events (POST /events/v2/apps/{app_name}/web/9320)
+  mechanism:
+    field: eventUUID
+    location: request body
+    format: UUID v4
+    semantics: 'The event uuid is used for duplication as a unique ID for the event. If the
+      caller does not supply one, the event API generates it automatically — which means
+      a retry WITHOUT a client-supplied eventUUID is NOT deduplicated and will double-count.'
+    retention: 'Not published. Airbridge states no window over which a repeated eventUUID
+      is suppressed.'
+    source: https://help.airbridge.io/en/references/s2s-event/send-in-app-events
+  not_covered:
+  - POST /v1/tracking-links (create tracking link)
+  - PUT|PATCH /v1/tracking-links/{id}/og-tag
+  - PUT|PATCH /v1/tracking-links/{id}/routing
+  - POST /self-serve-data/v1/ad-spend/requests
+  - POST /self-serve-data/v1/metric/requests
+  - POST /reports/api/v7/apps/{app_name}/actuals/query (and the revenue, active-users and retention query jobs)
+  - POST /log-export/api/v3/apps/{app_name}/{type}/request
+  header_key: none
+  note: 'There is no Idempotency-Key header anywhere in the published surface. Replay
+    protection exists on the two event-ingestion endpoints only, via a body field, and
+    only when the caller generates the id itself. Nine of the eleven documented mutating
+    operations have no replay protection at all.'
+reversibility:
+  grade: documented
+  note: 'One reversal path is documented and it states no window; nothing else in the
+    published surface can be undone through the API. Graded `documented` rather than
+    `verified` because no window is stated for the one reversal that exists, and NO
+    window is asserted here that the docs do not state.'
+  surfaces:
+  - operation: Upload Ad Spend Data (POST /self-serve-data/v1/ad-spend/requests)
+    reversible: true
+    mechanism: compensating-write
+    how: 'To delete previously uploaded cost data, re-upload the clicks, impressions and
+      cost metrics for the same identity key with all values set to 0.'
+    window: null
+    window_stated: false
+    docs: https://help.airbridge.io/en/references/self-serve-data/upload-ad-spend-data
+  - operation: Upload Metric Data (POST /self-serve-data/v1/metric/requests)
+    reversible: unknown
+    how: null
+    window: null
+    note: 'The reference does not state whether the zero-value compensating write also
+      applies to metric uploads.'
+    docs: https://help.airbridge.io/en/references/self-serve-data/upload-metric-data
+  - operation: Create Tracking Link (POST /v1/tracking-links)
+    reversible: false
+    note: 'No delete operation is published. Routing and Open Graph settings can be
+      overwritten via PUT/PATCH, but a created tracking link cannot be removed through
+      the API.'
+    docs: https://help.airbridge.io/en/references/tracking-link/create-tracking-link
+  - operation: Send In-app / In-web Events
+    reversible: false
+    note: 'Ingested events cannot be retracted through the API. The only protection is the
+      caller-supplied eventUUID deduplication and the server-side rule that an
+      eventTimestamp older than 24 hours is discarded.'
+    docs: https://help.airbridge.io/en/references/s2s-event/send-in-app-events
+  - operation: Report and raw-data-export jobs
+    reversible: na
+    note: 'Read-only asynchronous queries. A job can reach a CANCELED state, but no cancel
+      operation is published in the API reference.'
+dry_run_mode:
+  supported: false
+  note: 'No dry-run or validate-only parameter is published. The nearest facility is the
+    dashboard Testing Console plus test identifiers and real-time logs — see
+    sandbox/ab180-sandbox.yml — which observe live traffic rather than rehearse a call.'
+pagination:
+  styles:
+  - style: cursor
+    endpoint: GET /v2/tracking-links
+    request_params:
+      next_cursor: 'Cursor for the next page (number). Pass the previous response nextCursor.'
+      size: Page size.
+      sort_key: enum
+      sort_type: enum (ASC|DESC)
+    response_fields:
+      nextCursor: 'Cursor for the next page; null when no more data.'
+      hasNext: Boolean, true when more data exists.
+    source: https://help.airbridge.io/en/references/tracking-link/list-tracking-links-v2
+  - style: page-size-only
+    endpoint: GET /v1/tracking-links
+    request_params:
+      size: 'Page size, maximum 500 (a size above 1000 is rejected with validation_error).'
+    note: 'Superseded by the v2 cursor endpoint.'
+    source: https://help.airbridge.io/en/references/tracking-link/list-tracking-links
+  required_range:
+    note: 'The tracking-link list endpoints require from and to date parameters; there is
+      no unbounded list.'
+async_job_pattern:
+  applies_to:
+  - Actuals Report
+  - Revenue Report
+  - Active Users Report
+  - Retention Report
+  - Raw Data Export
+  shape: 'POST a query to .../query and receive a taskId (report_id for exports), then poll
+    GET .../query/{task_id} until status leaves RUNNING.'
+  states: [RUNNING, SUCCESS, FAILED, CANCELED]
+  source: https://help.airbridge.io/en/references/actuals-report/request-report
+request_tracing:
+  request_id_header: none
+  response_field: traceId
+  format: 'AWS X-Ray style, 1-<hex>-<hex>'
+  note: 'traceId appears in problem+json error bodies only. No correlation id header is
+    documented on requests or on successful responses.'
+versioning:
+  scheme: uri-path
+  note: 'Versions are per service segment, not global, and they are not in step: tracking
+    links are on v1 and v2, events on v2, dataspec on v2, revenue and log-export on v3,
+    active users on v4, retention on v5, actuals on v7.'
+  current:
+    tracking-links: v2
+    events: v2
+    dataspec: v2
+    revenue-report: v3
+    raw-data-export: v3
+    active-users-report: v4
+    retention-report: v5
+    actuals-report: v7
+    attribution-result: v1
+    self-serve-data: v1
+    skadnetwork: v1
+  see: lifecycle/ab180-lifecycle.yml
+error_envelope:
+  primary: RFC 9457 problem+json
+  legacy: '{"result": "<message>"} on the Attribution Result API'
+  see: errors/ab180-problem-types.yml
+rate_limit_signaling:
+  headers: none
+  status: 429
+  see: rate-limits/ab180-rate-limits.yml
+field_expansion:
+  supported: false
+  note: 'No expand / fields / include parameter is published. Report shaping is done with
+    the metrics and groupBys selected in the query body instead.'
+metadata:
+  supported: true
+  note: 'Tracking links carry campaign parameters (campaign, ad_group, ad_creative,
+    content, term, sub_id, sub_id_1..3) and events carry custom attributes and semantic
+    attributes — the provider''s equivalent of user-supplied metadata.'
+  source: https://help.airbridge.io/en/references/tracking-link/create-tracking-link
+cross_links:
+  errors: errors/ab180-problem-types.yml
+  lifecycle: lifecycle/ab180-lifecycle.yml
+  authentication: authentication/ab180-authentication.yml
+  rate_limits: rate-limits/ab180-rate-limits.yml
+  sandbox: sandbox/ab180-sandbox.yml
+  data_model: data-model/ab180-data-model.yml

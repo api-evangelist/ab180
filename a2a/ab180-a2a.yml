@@ -1,0 +1,44 @@
+generated: '2026-09-05'
+method: probed
+source: https://help.airbridge.io/.well-known/agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: help.airbridge.io
+  note: 'Served by the Airbridge Help Center (Mintlify-hosted docs host). The canonical
+    path 404s on airbridge.io, www.airbridge.io, api.airbridge.io, mcp.airbridge.io,
+    sdk-download.airbridge.io, ab180.co and www.ab180.co; the legacy /.well-known/agent.json
+    404s on every host. A negative-control probe of
+    /.well-known/ab180-negative-control-7f3ab91c.json returned 404 on every host, so
+    this is a real document and not a catch-all 200.'
+path_echo_control: passed
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  protocol_version: '0.3'
+  preferred_transport: HTTP+JSON
+  hard_checks:
+    capabilities_is_object: true
+    protocol_version_present: true
+    skills_is_array: true
+  deviations:
+  - supportedInterfaces-instead-of-additionalInterfaces
+card:
+  name: Airbridge Help Center
+  url: https://help.airbridge.io/
+  version: 1.0.0
+  documentation_url: https://help.airbridge.io/
+  provider_organization: Airbridge Help Center
+  skills: 1
+  skill_ids:
+  - airbridge
+  file: ab180-agent-card.json
+related:
+  agent_skill: https://help.airbridge.io/.well-known/agent-skills/airbridge/skill.md
+  note: 'The single declared skill points at a provider-published Agent Skill markdown
+    file, saved verbatim to skills/ab180-airbridge.md.'
+x-evidence:
+  fetched: '2026-09-05'
+  url: https://help.airbridge.io/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json

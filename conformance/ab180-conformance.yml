@@ -1,0 +1,141 @@
+generated: '2026-09-05'
+method: searched
+source: 'Airbridge API reference (help.airbridge.io/en/references), live probes of
+  api.airbridge.io and mcp.airbridge.io, and https://www.airbridge.io/en/information-security'
+standards:
+- id: rfc9457-problem-details
+  conforms: true
+  evidence: 'https://api.airbridge.io/openapi.json returned HTTP 404 with Content-Type
+    application/problem+json and a body carrying type, title, detail, status and a traceId
+    extension member (probed 2026-09-05). The same shape appears in the published 400/401/404
+    response examples.'
+  caveat: 'type is always the literal about:blank; the Attribution Result API still returns
+    a legacy {"result": ...} envelope.'
+- id: oauth2
+  conforms: true
+  evidence: 'https://mcp.airbridge.io/.well-known/oauth-authorization-server declares
+    authorization_code with response_type code.'
+- id: oauth2.1-pkce
+  conforms: true
+  evidence: 'code_challenge_methods_supported ["S256"] and
+    token_endpoint_auth_methods_supported ["none"] in the authorization server metadata;
+    the provider''s llms.txt states OAuth 2.1 + PKCE and instructs agents not to use API
+    keys for MCP.'
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  evidence: https://mcp.airbridge.io/.well-known/oauth-authorization-server (HTTP 200, saved to well-known/)
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  evidence: 'https://mcp.airbridge.io/.well-known/oauth-protected-resource and
+    /.well-known/oauth-protected-resource/mcp (HTTP 200, saved to well-known/)'
+- id: oidc-discovery
+  conforms: true
+  evidence: 'https://mcp.airbridge.io/.well-known/openid-configuration (HTTP 200) with
+    RS256 id_token signing and a userinfo endpoint.'
+- id: rfc7591-dynamic-client-registration
+  conforms: true
+  evidence: 'registration_endpoint https://mcp.airbridge.io/register declared in both the
+    authorization-server and OpenID discovery documents.'
+- id: mcp
+  conforms: true
+  evidence: 'Hosted Streamable HTTP MCP server at https://mcp.airbridge.io/mcp (401 with
+    WWW-Authenticate: Bearer, probed 2026-09-05) and an anonymous docs MCP server at
+    https://help.airbridge.io/mcp whose tools/list returned a real manifest.'
+- id: a2a-agent-card
+  conforms: true
+  grade: conformant
+  evidence: 'https://help.airbridge.io/.well-known/agent-card.json (HTTP 200,
+    protocolVersion 0.3, capabilities object, skills array). See a2a/ab180-a2a.yml.'
+- id: agent-skills
+  conforms: true
+  evidence: 'Provider-published Agent Skill at
+    https://help.airbridge.io/.well-known/agent-skills/airbridge/skill.md, saved verbatim
+    to skills/ab180-airbridge.md.'
+- id: llms-txt
+  conforms: true
+  evidence: 'https://www.airbridge.io/llms.txt and https://help.airbridge.io/llms.txt both
+    return 200 text/plain with a conforming H1 + blockquote + link-list structure.'
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: '/.well-known/security.txt returned 404 on all nine hosts probed.'
+- id: openapi
+  conforms: false
+  evidence: 'No OpenAPI or Swagger document is published. /openapi.json, /openapi.yaml,
+    /swagger.json, /v1/openapi.json and /api-docs were probed on airbridge.io,
+    www.airbridge.io, help.airbridge.io, api.airbridge.io, developers.airbridge.io,
+    ab180.co and www.ab180.co — all 404 (api.airbridge.io answers RFC 9457 problem+json).
+    Mintlify config paths (/mint.json, /docs.json) 404, the API reference pages are
+    hand-authored MDX using ParamField rather than generated from a spec, and the docs
+    MCP server''s own virtual filesystem contains only .mdx files under /en and /ko.'
+- id: asyncapi
+  conforms: false
+  evidence: 'No AsyncAPI document and no consumer-facing webhook subscription API is
+    published. Postbacks flow outward to ad networks and are configured in the dashboard,
+    not subscribed to over an API.'
+- id: graphql
+  conforms: false
+  evidence: No /graphql surface is documented or advertised.
+- id: rfc9331-ratelimit-headers
+  conforms: false
+  evidence: 'Rate limits are stated in prose per endpoint; no RateLimit-*, X-RateLimit-* or
+    Retry-After header is documented or observed.'
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No deprecation policy or Sunset/Deprecation header support is published.
+- id: idempotency-key
+  conforms: partial
+  evidence: 'No Idempotency-Key header. Deduplication exists only via the body field
+    eventUUID on the two server-to-server event endpoints. See conventions/.'
+domain_standards:
+- id: skadnetwork
+  name: Apple SKAdNetwork
+  conforms: true
+  evidence: 'The contract itself exposes a first-party SKAdNetwork surface: GET
+    https://api.airbridge.io/skadnetwork/v1/conversion-value-schema?api_key={API_KEY}&response_format={RESPONSE_FORMAT}&itunes_app_id={ITUNES_APP_ID}
+    returns the conversion-value schema for all SKAN versions, with a separately documented
+    (and deprecated) SKAN 3.0 variant. Airbridge states SKAN 4.0 support.'
+  spec_location: https://help.airbridge.io/en/references/skadnetwork-configuration/response-for-all-versions-of-skan
+  market: mobile advertising attribution
+  note: 'SKAdNetwork is the domain standard an iOS advertiser must already speak; an MMP
+    that serves the conversion-value schema over an API integrates with an ad network''s
+    existing SKAN pipeline without a bespoke connector.'
+- id: att
+  name: Apple App Tracking Transparency
+  conforms: true
+  evidence: 'SDK documentation requires the ATT prompt and exposes
+    setAutoDetermineTrackingAuthorizationTimeout for IDFA collection.'
+  spec_location: https://help.airbridge.io/en/developers/ios-sdk-v4
+compliance_programs:
+- id: soc2-type2
+  status: certified
+  auditor: Deloitte Anjin LLC
+  evidence: https://www.airbridge.io/en/information-security
+- id: iso-27001
+  status: certified
+  version: '2013'
+  certifier: SGS
+  evidence: https://www.airbridge.io/en/information-security
+- id: iso-27017
+  status: certified
+  version: '2015'
+  certifier: SGS
+  evidence: https://www.airbridge.io/en/information-security
+- id: iso-27018
+  status: certified
+  version: '2019'
+  certifier: SGS
+  evidence: https://www.airbridge.io/en/information-security
+- id: isms-kisa
+  status: certified
+  certificate_id: ISMS-KISA-2023-138
+  certifier: Korea Internet & Security Agency
+  evidence: https://www.airbridge.io/en/information-security
+- id: gdpr
+  status: claimed
+  evidence: https://www.airbridge.io/en/solutions/security-privacy
+- id: ccpa
+  status: claimed
+  evidence: https://www.airbridge.io/en/solutions/security-privacy
+- id: pipl
+  status: claimed
+  evidence: https://www.airbridge.io/en/solutions/security-privacy

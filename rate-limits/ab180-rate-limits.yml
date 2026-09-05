@@ -1,0 +1,64 @@
+generated: '2026-09-05'
+method: searched
+source: 'Per-endpoint "rate limit" statements in the Airbridge API reference at
+  https://help.airbridge.io/en/references/'
+limit_count: 5
+headers:
+  published: false
+  note: 'CRITICAL GAP FOR AGENTS: Airbridge documents its limits in prose but publishes NO
+    rate-limit response headers. No X-RateLimit-*, no RateLimit-* (RFC 9331), and no
+    Retry-After is documented anywhere in the API reference. A caller cannot read its
+    remaining budget or a reset time at runtime — it can only observe the 429 after the
+    fact and back off blindly.'
+  probed: 'Unauthenticated requests to https://api.airbridge.io return 401/404 problem+json
+    with no rate-limit headers, so no runtime signal could be observed either.'
+exhaustion:
+  status: 429
+  reason: Too Many Requests
+  body: RFC 9457 problem+json
+limits:
+- name: Create Tracking Link
+  scope: per-endpoint
+  operation: POST https://api.airbridge.io/v1/tracking-links
+  limit: 50
+  unit: tracking links
+  window: 1 second
+  source: https://help.airbridge.io/en/references/tracking-link/create-tracking-link
+- name: Send In-app Events (server-to-server)
+  scope: per-endpoint
+  operation: POST https://api.airbridge.io/events/v2/apps/{app_name}/mobile-app/9360
+  limit: 1000
+  unit: requests
+  window: 1 minute
+  source: https://help.airbridge.io/en/references/s2s-event/send-in-app-events
+- name: Send In-web Events (server-to-server)
+  scope: per-endpoint
+  operation: POST https://api.airbridge.io/events/v2/apps/{app_name}/web/9320
+  limit: 1000
+  unit: requests
+  window: 1 minute
+  source: https://help.airbridge.io/en/references/s2s-event/send-in-web-events
+- name: Request Raw Data Export
+  scope: per-endpoint
+  operation: POST https://api.airbridge.io/log-export/api/v3/apps/{app_name}/{type}/request
+  limit: 100
+  unit: requests
+  window: 1 day
+  source: https://help.airbridge.io/en/references/raw-data-export/request-raw-data-export
+- name: Report query APIs (Actuals, Revenue, Active Users, Retention)
+  scope: per-endpoint
+  operation: 'POST https://api.airbridge.io/reports/api/v7/apps/{app_name}/actuals/query
+    (and the v3 revenue, v4 active-users, v5 retention equivalents)'
+  limit: null
+  window: null
+  policy: 'No specific limit for normal usage. Airbridge states a temporary 429 Too Many
+    Requests may be returned if excessive requests that threaten service stability are
+    detected.'
+  source: https://help.airbridge.io/en/references/actuals-report/request-report
+other_constraints:
+- constraint: 'List Tracking Links page size must be <= 1000 (a 500 validation_error is
+    returned above it); the v1 endpoint documents a maximum of 500.'
+  source: https://help.airbridge.io/en/references/tracking-link/list-tracking-links
+- constraint: 'Server-to-server events with an eventTimestamp older than 24 hours from the
+    time of transmission are not processed.'
+  source: https://help.airbridge.io/en/references/s2s-event/send-in-app-events

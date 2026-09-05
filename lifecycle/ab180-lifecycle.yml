@@ -1,0 +1,95 @@
+generated: '2026-09-05'
+method: searched
+source: 'https://help.airbridge.io/en/references/ (URI versions), the SDK release-note and
+  migration-guide pages under https://help.airbridge.io/en/developers/, and
+  https://status.airbridge.io/'
+versioning:
+  scheme: uri-path
+  granularity: per-service
+  docs: https://help.airbridge.io/en/references/introduction
+  note: 'Each service segment carries its own major version and they advance
+    independently. There is no single API version and no version header or date-pinning
+    mechanism.'
+  current:
+    tracking-links: v2
+    events: v2
+    dataspec: v2
+    revenue-report: v3
+    raw-data-export: v3
+    active-users-report: v4
+    retention-report: v5
+    actuals-report: v7
+    attribution-result: v1
+    self-serve-data: v1
+    skadnetwork: v1
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: unknown
+  note: 'No API deprecation policy, sunset schedule or RFC 8594 Sunset/Deprecation header
+    support is published. Deprecation is communicated per artifact: superseded SDK major
+    versions get a "(Deprecated)" documentation section and a migration guide, and one
+    API endpoint is labelled deprecated in its own title.'
+deprecated_operations:
+- operation: Get SKAN 3.0 Conversion Value Schema
+  status: deprecated
+  docs: https://help.airbridge.io/en/references/skadnetwork-configuration/get-skan-3-0-conversion-value-schema-deprecated
+  successor: https://help.airbridge.io/en/references/skadnetwork-configuration/response-for-all-versions-of-skan
+- operation: List Tracking Links (v1)
+  status: superseded
+  docs: https://help.airbridge.io/en/references/tracking-link/list-tracking-links
+  successor: https://help.airbridge.io/en/references/tracking-link/list-tracking-links-v2
+  note: 'Not labelled deprecated by the provider; recorded as superseded because the v2
+    endpoint adds cursor pagination and is documented ahead of it.'
+deprecated_sdks:
+- name: Android SDK v2
+  docs: https://help.airbridge.io/en/developers/deprecated-android-sdk-v2
+  migration: https://help.airbridge.io/en/developers/migration-guide-for-android-sdk-v4
+  note: 'Still receiving maintenance releases — v2.28.1 shipped 2026-07-31 to fix a 16 KB
+    page-size alignment warning — so "deprecated" here means superseded, not unsupported.'
+- name: iOS SDK v1
+  docs: https://help.airbridge.io/en/developers/deprecated-ios-sdk-v1
+  migration: https://help.airbridge.io/en/developers/migration-guide-for-ios-sdk-v4
+- name: React Native SDK v2
+  docs: https://help.airbridge.io/en/developers/deprecated-react-native-sdk-v2
+  migration: https://help.airbridge.io/en/developers/migration-guide-for-react-native-sdk-v4
+- name: Cordova-Ionic SDK v2
+  docs: https://help.airbridge.io/en/developers/deprecated-cordova-ionic-sdk-v2
+- name: Flutter SDK v3
+  docs: https://help.airbridge.io/en/developers/deprecated-flutter-sdk-v3
+- name: Expo SDK v2
+  docs: https://help.airbridge.io/en/developers/deprecated-expo-sdk-v2
+- name: Unity SDK v1
+  docs: https://help.airbridge.io/en/developers/deprecated-unity-sdk-v1
+status_page:
+  url: https://status.airbridge.io/
+  provider: Atlassian Statuspage
+  http_status: 200
+  checked: '2026-09-05'
+  components:
+  - Tracking Link Redirection & Deep Linking
+  - Attribution
+  - Postback
+  - Cost Integration
+  - Dashboard
+  - Campaign Report
+  - Raw Data Export
+  metrics:
+  - Tracking Link Response Time
+  feeds:
+    atom: https://status.airbridge.io/history.atom
+    rss: https://status.airbridge.io/history.rss
+  subscriptions: [email, slack, rss, atom]
+  machine_readable: 'Atlassian Statuspage exposes /api/v2/summary.json and
+    /api/v2/status.json on this host by convention; the published page advertises only the
+    Atom and RSS feeds.'
+sla:
+  url: null
+  uptime_target: null
+  note: 'No public SLA or uptime commitment is published. Airbridge states annual
+    third-party penetration testing and internal testing in its information-security page
+    but publishes no availability target.'
+support_lifecycle:
+  data_retention: 'Not published in the API reference. Server-to-server events with an
+    eventTimestamp older than 24 hours are rejected at ingestion.'
+  breaking_change_notice: 'No stated notice period.'

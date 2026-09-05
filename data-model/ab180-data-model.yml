@@ -1,0 +1,192 @@
+generated: '2026-09-05'
+method: searched
+source: 'Request/response examples and parameter tables in the Airbridge API reference at
+  https://help.airbridge.io/en/references/'
+note: 'DERIVED FROM DOCUMENTATION, NOT A SPEC. Airbridge publishes no OpenAPI, so there are
+  no $ref links or component schemas to walk. Every entity, field and relationship below is
+  read from a published request parameter table or response example; nothing is inferred
+  beyond what those pages state, and no field is listed that does not appear in them.'
+identifiers:
+- name: app_name
+  form: 'Airbridge App Name (unique ID) used as a path segment on almost every endpoint.'
+  note: 'The tenancy key. It scopes events, reports, exports and self-serve uploads.'
+- name: id
+  form: 'Numeric tracking link id, e.g. 10000.'
+- name: taskId
+  form: UUID v4
+  scope: report query jobs
+- name: report_id
+  scope: raw data export requests
+- name: request_id
+  scope: self-serve data upload requests
+- name: eventUUID
+  form: UUID v4
+  scope: server-to-server events
+  role: deduplication key
+- name: device_uuid
+  scope: attribution result lookup
+- name: itunes_app_id
+  scope: SKAdNetwork conversion value schema
+entities:
+- name: App
+  description: 'The tenant. Every other resource hangs off an app_name and inherits its
+    timezone and currency, which the docs state cannot be changed after registration.'
+  managed_via: dashboard
+  api_surface: 'Referenced as a path parameter; there is no app CRUD API.'
+- name: TrackingLink
+  description: 'An Airbridge tracking link — simultaneously a redirect and an attribution
+    touchpoint. Created, read, listed and partially updated over the API.'
+  operations:
+  - POST /v1/tracking-links
+  - GET /v1/tracking-links/{id}
+  - GET /v2/tracking-links
+  - GET /v1/tracking-links
+  - PUT|PATCH /v1/tracking-links/{id}/og-tag
+  - PUT|PATCH /v1/tracking-links/{id}/routing
+  fields:
+  - channel
+  - campaignParams
+  - isReengagement
+  - deeplinkUrl
+  - createdAt
+  - iosCustomProductPageId
+  docs: https://help.airbridge.io/en/references/tracking-link/create-tracking-link
+- name: CampaignParams
+  description: 'Embedded value object on a tracking link carrying the campaign taxonomy
+    that later becomes report GroupBy values.'
+  fields:
+  - campaign
+  - ad_group
+  - ad_creative
+  - content
+  - term
+  - sub_id
+  - sub_id_1
+  - sub_id_2
+  - sub_id_3
+  docs: https://help.airbridge.io/en/references/tracking-link/create-tracking-link
+- name: OpenGraphTag
+  description: Social share preview attached to a tracking link.
+  operations: ['PUT|PATCH /v1/tracking-links/{id}/og-tag']
+- name: Routing
+  description: Platform destination and fallback rules attached to a tracking link.
+  operations: ['PUT|PATCH /v1/tracking-links/{id}/routing']
+- name: Event
+  description: 'A measured in-app or in-web event, ingested server-to-server or by SDK.'
+  operations:
+  - POST /events/v2/apps/{app_name}/mobile-app/9360
+  - POST /events/v2/apps/{app_name}/web/9320
+  fields:
+  - eventUUID
+  - eventTimestamp
+  - user
+  - device
+  - eventData
+  constraints:
+  - 'eventTimestamp older than 24 hours is not processed.'
+  docs: https://help.airbridge.io/en/references/s2s-event/send-in-app-events
+- name: EventData
+  description: 'Embedded object on an event carrying the goal, its semanticAttributes
+    (including transactionID) and custom attributes.'
+- name: ReportTask
+  description: 'An asynchronous report query job. One entity shape shared by the Actuals,
+    Revenue, Active Users and Retention reports, each on its own version segment.'
+  operations:
+  - POST /reports/api/v7/apps/{app_name}/actuals/query
+  - GET  /reports/api/v7/apps/{app_name}/actuals/query/{task_id}
+  - POST /reports/api/v3/apps/{app_name}/revenue/query
+  - GET  /reports/api/v3/apps/{app_name}/revenue/query/{task_id}
+  - POST /reports/api/v4/apps/{app_name}/active-users/query
+  - GET  /reports/api/v4/apps/{app_name}/active-users/query/{task_id}
+  - POST /reports/api/v5/apps/{app_name}/retention/query
+  - GET  /reports/api/v5/apps/{app_name}/retention/query/{task_id}
+  fields:
+  - taskId
+  - status
+  states: [RUNNING, SUCCESS, FAILED, CANCELED]
+- name: ReportMetadata
+  description: 'The metric, groupBy, event, retention-type and measurement-option
+    vocabularies a report query may reference.'
+  operations:
+  - GET /dataspec/v2/apps/{app_name}/actual-report/metrics
+  - GET /dataspec/v2/apps/{app_name}/actual-report/fields
+  docs: https://help.airbridge.io/en/references/actuals-report/get-metadata-metric
+- name: RawDataExportRequest
+  description: An asynchronous raw-log export job.
+  operations:
+  - POST /log-export/api/v3/apps/{app_name}/{type}/request
+  - GET  /log-export/api/v3/apps/{app_name}/request/{report_id}
+  fields: [report_id, type]
+- name: AttributionResult
+  description: 'The attribution outcome for one mobile device, looked up by device_uuid.'
+  operations:
+  - GET /attribution-result/v1/apps/{app_name}/mobile-app
+  note: 'Uses the legacy {"result": ...} error envelope rather than problem+json.'
+- name: SelfServeDataUpload
+  description: 'A customer-supplied ad-spend or metric upload and its processing progress.'
+  operations:
+  - POST /self-serve-data/v1/ad-spend/requests
+  - GET  /self-serve-data/v1/ad-spend/requests/{request_id}
+  - POST /self-serve-data/v1/metric/requests
+  - GET  /self-serve-data/v1/metric/requests/{request_id}
+  fields: [request_id, status]
+  states: [uploaded, succeeded, failed]
+- name: SKAdNetworkConversionValueSchema
+  description: 'The SKAN conversion-value schema an ad network reads for an iTunes app id.'
+  operations:
+  - GET /skadnetwork/v1/conversion-value-schema
+  fields: [itunes_app_id, response_format, last_update_time]
+relationships:
+- from: TrackingLink
+  to: App
+  type: belongs_to
+  via: app (tenant scope)
+- from: TrackingLink
+  to: CampaignParams
+  type: has_one
+  via: campaignParams
+- from: TrackingLink
+  to: OpenGraphTag
+  type: has_one
+  via: /og-tag
+- from: TrackingLink
+  to: Routing
+  type: has_one
+  via: /routing
+- from: Event
+  to: App
+  type: belongs_to
+  via: app_name
+- from: Event
+  to: EventData
+  type: has_one
+  via: eventData
+- from: ReportTask
+  to: App
+  type: belongs_to
+  via: app_name
+- from: ReportTask
+  to: ReportMetadata
+  type: references
+  via: metrics and groupBys selected in the query body
+- from: RawDataExportRequest
+  to: App
+  type: belongs_to
+  via: app_name
+- from: AttributionResult
+  to: App
+  type: belongs_to
+  via: app_name
+- from: SelfServeDataUpload
+  to: App
+  type: belongs_to
+  via: app_name
+- from: SKAdNetworkConversionValueSchema
+  to: App
+  type: belongs_to
+  via: itunes_app_id
+gaps:
+- 'No published schema document, so field types and required-ness are only as precise as
+  the prose parameter tables.'
+- 'No delete operation exists for any entity; the only removal path is a zero-value
+  compensating write on ad-spend uploads.'

@@ -1,0 +1,38 @@
+generated: '2026-09-05'
+method: probed
+source: https://mcp.airbridge.io/.well-known/oauth-authorization-server
+docs: https://www.airbridge.io/en/product/airbridge-ai
+note: 'The Airbridge REST API uses bearer API tokens with no OAuth scope surface — its
+  only permission granularity is the two token TYPES (API Token, Tracking Link API Token),
+  recorded in authentication/ab180-authentication.yml. The only OAuth surface Airbridge
+  operates is the MCP server, whose scopes are read here from its live RFC 8414 / RFC 9728
+  / OpenID Connect Discovery documents.'
+schemes:
+- name: airbridgeMcpOAuth
+  source: well-known/ab180-oauth-authorization-server.json
+  issuer: https://mcp.airbridge.io
+  resource: https://mcp.airbridge.io/mcp
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://mcp.airbridge.io/oauth/authorize
+    tokenUrl: https://mcp.airbridge.io/oauth/token
+    code_challenge_methods:
+    - S256
+scopes:
+- scope: openid
+  description: Request an OpenID Connect ID token identifying the Airbridge user.
+  flows: [authorizationCode]
+  sources: [well-known/ab180-oauth-authorization-server.json, well-known/ab180-oauth-protected-resource.json]
+- scope: profile
+  description: Basic profile claims for the authenticated Airbridge user.
+  flows: [authorizationCode]
+  sources: [well-known/ab180-oauth-authorization-server.json, well-known/ab180-oauth-protected-resource.json]
+- scope: email
+  description: Email address claim for the authenticated Airbridge user.
+  flows: [authorizationCode]
+  sources: [well-known/ab180-oauth-authorization-server.json, well-known/ab180-oauth-protected-resource.json]
+gaps:
+  note: 'The advertised scopes are identity scopes only. Nothing in the published metadata
+    expresses what Airbridge DATA an MCP token may reach — data authorization is implied
+    by the user''s dashboard permissions, not by a scope. No scopes/permissions reference
+    page is published.'

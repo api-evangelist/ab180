@@ -1,0 +1,74 @@
+generated: '2026-09-05'
+method: searched
+source: 'https://help.airbridge.io/en/developers/testing-android-sdk-v4 and the sibling
+  testing pages for iOS, React Native, Flutter, Unity, Expo, Cordova-Ionic and Unreal,
+  plus https://help.airbridge.io/en/developers/realtime-logs-faq'
+model: observation
+note: 'Airbridge ships NO sandbox account, no test-vs-live key separation and no test-mode
+  key prefix — there is one live environment and one API token. What it provides instead is
+  an observation and verification toolkit that runs against production: a Testing Console,
+  registered test identifiers that bypass log sampling, and real-time logs. No magic test
+  values are published; every value below is a facility, not a fixture.'
+test_live_separation:
+  separate_environments: false
+  key_prefixes: none
+  note: 'The dashboard issues one API Token and one Tracking Link API Token per app. There
+    is no test key and no mode switch.'
+facilities:
+- name: Testing Console
+  location: 'Airbridge dashboard, [Settings] > [Testing Console]'
+  tabs:
+  - Attributed Installs
+  purpose: 'Enter a test device''s device ID, generate a QR-coded tracking link, click it
+    from the device, and read back whether the attributed install was measured.'
+  docs: https://help.airbridge.io/en/developers/testing-android-sdk-v4
+- name: Test Identifiers
+  location: 'Airbridge dashboard, [Raw Data] > [Test Identifiers]'
+  purpose: 'Register a device ID, browser, user account or IP address. Real-Time Logs are
+    SAMPLED, so an event from an unregistered device may legitimately never appear;
+    events from registered test identifiers bypass sampling and all appear.'
+  agent_relevance: 'A verification loop that does not register a test identifier first will
+    produce false negatives.'
+  docs: https://help.airbridge.io/en/guides/tracking-events-with-real-time-logs
+- name: App Real-time Logs
+  location: 'Airbridge dashboard, [Raw Data] > [App Real-time Logs]'
+  purpose: 'Inspect collected install, deeplink and in-app events by device ID to confirm
+    an integration is emitting the intended taxonomy.'
+  latency: 'Up to 10 minutes from the actual event time.'
+  access: 'Users with the Agency or Media Partner app role cannot access App Real-time Logs.'
+  searchable_by:
+  - device ID
+  docs: https://help.airbridge.io/en/developers/realtime-logs-faq
+- name: My Device ID by Airbridge
+  type: companion app
+  purpose: 'First-party mobile app that reports the test device''s GAID / IDFA / Airbridge
+    device ID so it can be registered as a test identifier.'
+  docs: https://help.airbridge.io/en/developers/testing-android-sdk-v4
+- name: Airbridge Debug Log Guide
+  purpose: SDK-side debug logging for verifying event transmission from the client.
+  docs: https://help.airbridge.io/en/developers/airbridge-debug-log-guide
+test_flows:
+- name: Attributed install test
+  steps: 'Uninstall the app, enter the device ID in the Testing Console Attributed Installs
+    tab, scan or open the generated tracking link from the device, install and launch, then
+    read the result or fall back to App Real-time Logs.'
+- name: Organic install test
+  steps: 'Uninstall, install and launch the app directly, then confirm the install event in
+    App Real-time Logs.'
+- name: In-app event test
+  steps: 'Trigger the event on the test device and search App Real-time Logs by device ID
+    to confirm it matches the intended event taxonomy.'
+- name: Deep link test
+  steps: 'Documented pre-setup differs for deep link vs deferred deep link — the app must
+    be installed for the former and absent for the latter.'
+  docs: https://help.airbridge.io/en/deeplink-guides/deep-linking-test
+test_values:
+  published: false
+  note: 'No test card numbers, test tokens, magic identifiers or fixture values are
+    published, and none are invented here. The only literal in the docs is an example
+    device-log search string in the Real-time Logs FAQ, which is illustrative rather than a
+    working fixture.'
+time_simulation:
+  supported: false
+  note: 'No test clock. The server rejects any server-to-server event whose eventTimestamp
+    is older than 24 hours, which also rules out backfilling historical fixtures.'

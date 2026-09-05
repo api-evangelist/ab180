@@ -1,18 +1,89 @@
 aid: ab180
 name: Ab180
-description: 'Ab180 is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'AB180 Inc. is a Seoul, South Korea based marketing technology company and
+  the maker of Airbridge, a mobile measurement partner (MMP) and people-based attribution
+  platform that measures paid and organic acquisition across mobile apps, web, PC, console
+  and CTV in one dashboard. Airbridge exposes a public REST API at api.airbridge.io covering
+  tracking-link creation and management, server-to-server in-app and in-web event ingestion,
+  asynchronous Actuals / Revenue / Active Users / Retention report queries, raw data export,
+  attribution result lookup, self-serve ad-spend and metric upload, and SKAdNetwork conversion-value
+  schema retrieval, alongside eleven first-party SDKs and a hosted, OAuth 2.1 protected Model
+  Context Protocol server at mcp.airbridge.io for agent access to attribution data.'
+image: https://www.airbridge.io/og-image-home.png
 url: https://raw.githubusercontent.com/api-evangelist/ab180/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-09-05'
 modified: '2026-09-05'
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 25
+  pass: local-v3
+position: Producing
 tags:
 - Company
-apis: []
+- Attribution
+- Mobile Measurement
+- Marketing
+- Analytics
+- Advertising
+- Deep Linking
+- Mobile
+- Reporting
+- South Korea
+apis:
+- aid: ab180:airbridge-api
+  name: Airbridge API
+  description: 'The Airbridge REST API. Resource-oriented URLs over HTTPS, JSON responses,
+    bearer API-token authentication and RFC 9457 problem+json errors. Covers tracking links
+    (create, read, list, update Open Graph and routing), server-to-server in-app and in-web
+    event ingestion, asynchronous report queries (Actuals, Revenue, Active Users, Retention)
+    with their metadata endpoints, raw data export requests, attribution result lookup,
+    self-serve ad-spend and metric data upload, and the SKAdNetwork conversion value schema.'
+  humanURL: https://help.airbridge.io/en/references/introduction
+  baseURL: https://api.airbridge.io
+  image: https://www.airbridge.io/og-image-home.png
+  tags:
+  - Attribution
+  - Tracking Links
+  - Events
+  - Reporting
+  - Raw Data
+  properties:
+  - type: APIReference
+    url: https://help.airbridge.io/en/references/introduction
+  - type: Authentication
+    url: authentication/ab180-authentication.yml
+  - type: ErrorCatalog
+    url: errors/ab180-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/ab180-rate-limits.yml
+  - type: Conventions
+    url: conventions/ab180-conventions.yml
+  - type: DataModel
+    url: data-model/ab180-data-model.yml
+  - type: Postman
+    url: https://www.postman.com/airbridge-engineering/workspace/airbridge-api/overview
+- aid: ab180:airbridge-mcp
+  name: Airbridge MCP Server
+  description: 'Airbridge''s hosted Model Context Protocol server. Streamable HTTP transport
+    at https://mcp.airbridge.io/mcp, protected by OAuth 2.1 with PKCE (S256) and dynamic
+    client registration; it lets an MCP-compatible agent query Airbridge attribution and
+    campaign performance data in natural language. PII access is blocked by the provider.'
+  humanURL: https://www.airbridge.io/en/product/airbridge-ai
+  baseURL: https://mcp.airbridge.io/mcp
+  image: https://www.airbridge.io/og-image-home.png
+  tags:
+  - MCP
+  - Agents
+  - Attribution
+  properties:
+  - type: MCPServer
+    url: mcp/ab180-mcp.yml
+  - type: OAuthScopes
+    url: scopes/ab180-scopes.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +91,76 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://equityzen.com/company/ab180
+  url: https://www.airbridge.io/en
+- type: DeveloperPortal
+  url: https://help.airbridge.io/en/developers/getting-started
+- type: Documentation
+  url: https://help.airbridge.io/en
+- type: APIReference
+  url: https://help.airbridge.io/en/references/introduction
+- type: GettingStarted
+  url: https://help.airbridge.io/en/developers/sdk-quickstart
+- type: Support
+  url: https://help.airbridge.io/en
+- type: Blog
+  url: https://www.airbridge.io/en/blog
+- type: GitHubOrganization
+  url: https://github.com/ab180
+- type: Pricing
+  url: https://www.airbridge.io/en/pricing
+- type: SignUp
+  url: https://app.airbridge.io/signup?from=gnb&selected_plan=ABR_CORE
+- type: Login
+  url: https://app.airbridge.io/login
+- type: TermsOfService
+  url: https://www.airbridge.io/en/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.airbridge.io/en/privacy-policy
+- type: Postman
+  url: https://www.postman.com/airbridge-engineering/workspace/airbridge-api/overview
+- type: StatusPage
+  url: https://status.airbridge.io/
+- type: Compliance
+  url: https://www.airbridge.io/en/information-security
+- type: TrustCenter
+  url: security/ab180-trust-center.yml
+- type: Packages
+  url: packages/ab180-packages.yml
+- type: SDKs
+  url: packages/ab180-packages.yml
+- type: WellKnown
+  url: well-known/ab180-well-known.yml
+- type: AgentCard
+  url: a2a/ab180-a2a.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: MCPServer
+  url: mcp/ab180-mcp.yml
+- type: LLMsTxt
+  url: llms/ab180-llms.txt
+- type: Authentication
+  url: authentication/ab180-authentication.yml
+- type: OAuthScopes
+  url: scopes/ab180-scopes.yml
+- type: Conventions
+  url: conventions/ab180-conventions.yml
+- type: Idempotency
+  url: conventions/ab180-conventions.yml
+- type: ErrorCatalog
+  url: errors/ab180-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/ab180-lifecycle.yml
+- type: ChangeLog
+  url: changelog/ab180-changelog.yml
+- type: Plans
+  url: plans/ab180-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/ab180-rate-limits.yml
+- type: Sandbox
+  url: sandbox/ab180-sandbox.yml
+- type: Conformance
+  url: conformance/ab180-conformance.yml
+- type: DomainSecurity
+  url: security/ab180-domain-security.yml
+- type: DataModel
+  url: data-model/ab180-data-model.yml

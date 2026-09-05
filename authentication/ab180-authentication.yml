@@ -1,0 +1,80 @@
+generated: '2026-09-05'
+method: searched
+source: openapi/ NONE — derived from provider documentation
+docs: https://help.airbridge.io/en/references/introduction
+note: 'Airbridge publishes no OpenAPI, so no securityScheme block could be parsed. This
+  profile is read from the API reference introduction, the per-endpoint reference pages
+  and the live OAuth discovery documents on mcp.airbridge.io.'
+summary:
+  types:
+  - http
+  - apiKey
+  - oauth2
+  api_key_in:
+  - header
+  - query
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearer_format: Airbridge API token
+  in: header
+  parameter: Authorization
+  applies_to: https://api.airbridge.io
+  value_form: 'Authorization: Bearer {AIRBRIDGE-API-TOKEN}'
+  issued_at: 'Airbridge dashboard, [Settings] > [Tokens]'
+  source: https://help.airbridge.io/en/references/introduction
+  token_types:
+  - name: API Token
+    scope: 'All API calls. Broad permission — the docs warn it must not be exposed in
+      publicly accessible areas.'
+  - name: Tracking Link API Token
+    scope: 'Tracking link generation only. Intended for use from a client or client
+      server.'
+  rotation: 'Regenerating a token in [Settings] > [Tokens] immediately and automatically
+    revokes the existing token; every caller using it starts receiving an unauthorized
+    error.'
+- name: skanApiKey
+  type: apiKey
+  in: query
+  parameter: api_key
+  applies_to: https://api.airbridge.io/skadnetwork/v1/conversion-value-schema
+  source: https://help.airbridge.io/en/references/skadnetwork-configuration/response-for-all-versions-of-skan
+  note: 'The SKAdNetwork conversion-value schema endpoint takes its key as a query-string
+    parameter rather than an Authorization header — the one endpoint in the published
+    surface that deviates from bearer auth.'
+- name: airbridgeMcpOAuth
+  type: oauth2
+  applies_to: https://mcp.airbridge.io/mcp
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://mcp.airbridge.io/oauth/authorize
+    tokenUrl: https://mcp.airbridge.io/oauth/token
+    pkce: S256
+    scopes:
+      openid: OpenID Connect subject
+      profile: Basic profile claims
+      email: Email address claim
+  dynamic_client_registration: https://mcp.airbridge.io/register
+  token_endpoint_auth_methods:
+  - none
+  userinfo_endpoint: https://mcp.airbridge.io/oauth/userinfo
+  id_token_signing_alg:
+  - RS256
+  discovery:
+  - well-known/ab180-oauth-authorization-server.json
+  - well-known/ab180-oauth-protected-resource.json
+  - well-known/ab180-openid-configuration.json
+  source: https://mcp.airbridge.io/.well-known/oauth-authorization-server
+  method: probed
+sdk_authentication:
+  note: 'Client SDKs authenticate with an app name (unique ID) plus an SDK token, both
+    read from [Settings] > [Tokens] in the dashboard. This is a separate credential from
+    the REST API token.'
+  source: https://help.airbridge.io/en/developers/sdk-quickstart
+transport:
+  https_required: true
+  note: 'All requests must be made over HTTPS; plain HTTP and unauthenticated requests
+    return an error.'

@@ -1,0 +1,75 @@
+generated: '2026-09-05'
+method: searched
+source: https://www.airbridge.io/en/pricing
+corroborating_source: https://www.airbridge.io/llms.txt
+plan_count: 3
+currency: USD
+model: 'Usage-based on data points for the self-serve tier; volume-based on MAU or installs
+  for enterprise. Airbridge states it sells no paid add-ons — plans differ by feature
+  scope, not by add-on fees.'
+plans:
+- name: Core Plan
+  slug: core
+  url: https://www.airbridge.io/en/plans/core
+  price: '40'
+  price_display: $40+/mo
+  currency: USD
+  billing_period: monthly
+  contract: 'No annual contract'
+  trial: 30-day free trial
+  self_serve: true
+  signup: https://app.airbridge.io/signup?from=gnb&selected_plan=ABR_CORE
+  included_quota:
+    metric: data points
+    amount: 500000
+    period: month
+  overage:
+    unit: data point
+    price: '0.0001'
+    currency: USD
+  quota_exclusions: 'Attribution events and tracking link clicks do not count as data
+    points.'
+  limits:
+  - 'Cost aggregation and Audience Manager limited to Meta Ads, Google Ads, Apple Ads and
+    TikTok'
+  - 'Up to 2 third-party integrations'
+  - '100 AI Pilot calls per month per account'
+  includes:
+  - Predictive LTV
+  - Deep linking and deferred deep linking
+  - Subscription revenue sync from RevenueCat, Adapty or Superwall
+  excludes:
+  - Raw data export
+  - Custom events
+  - Fraud detection
+  - Conversions API (CAPI)
+  availability: 'Not offered in Korea; Korean-market customers are directed to sales.'
+- name: Growth Plan
+  slug: growth
+  price: null
+  price_display: Custom
+  currency: USD
+  billing_period: null
+  self_serve: false
+  sales_contact: https://www.airbridge.io/en/book-a-demo
+  pricing_basis: 'Based on MAU or installs. Competitive, volume-based pricing.'
+  includes:
+  - 330+ ad networks and platforms
+  - Unlimited AI Pilot calls
+  - Raw data export
+  - Custom events
+  - Fraud detection
+  - Conversions API (CAPI)
+- name: DeepLink Plan
+  slug: deeplink
+  price: null
+  price_display: Contact sales
+  currency: null
+  self_serve: false
+  scope: 'Deep linking only.'
+  availability: 'Korea only.'
+  docs: https://help.airbridge.io/en/deeplink-guides/welcome
+api_pricing:
+  metered_separately: false
+  note: 'API access is not priced separately. Consumption is metered through the shared
+    data-point counter, and the raw data export API is a Growth Plan feature.'

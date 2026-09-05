@@ -1,0 +1,88 @@
+generated: '2026-09-05'
+method: searched
+source: https://help.airbridge.io/en/developers/release-note-android-sdk
+note: 'Airbridge publishes dated release notes per SDK and for the Tracking Link Generator.
+  It publishes NO changelog for the REST API itself — API change history is only visible
+  as new version segments in the URI. The window captured below is the Android SDK, the
+  most active of the nine release-note streams; the other streams are indexed under
+  streams[].'
+scheme: semver
+scope: sdk
+current_version:
+  android: 4.11.3
+  ios: 4.11.1
+  react-native: 4.10.0
+  expo: 4.10.0
+  flutter: 4.10.0
+  unity: 4.10.0
+  cordova-ionic: 4.4.2
+  web: 1.11.3
+streams:
+- name: Android SDK
+  url: https://help.airbridge.io/en/developers/release-note-android-sdk
+- name: iOS SDK
+  url: https://help.airbridge.io/en/developers/release-note-ios-sdk
+- name: Web SDK
+  url: https://help.airbridge.io/en/developers/release-note-web-sdk
+- name: React Native SDK
+  url: https://help.airbridge.io/en/developers/release-note-react-native-sdk
+- name: Cordova-Ionic SDK
+  url: https://help.airbridge.io/en/developers/release-note-cordova-ionic-phonegap-sdk
+- name: Flutter SDK
+  url: https://help.airbridge.io/en/developers/release-note-flutter-sdk
+- name: Expo SDK
+  url: https://help.airbridge.io/en/developers/release-note-expo-sdk
+- name: Unity SDK
+  url: https://help.airbridge.io/en/developers/release-note-unity-sdk
+- name: Unreal SDK
+  url: https://help.airbridge.io/en/developers/release-note-unreal-sdk
+- name: Tracking Link Generator
+  url: https://help.airbridge.io/en/developers/release-note-tracking-link-generator
+entries:
+- version: 4.11.3
+  stream: Android SDK
+  date: '2026-09-03'
+  breaking: false
+  fixes:
+  - Improved event queuing and transmission on first launch.
+- version: 4.11.2
+  stream: Android SDK
+  date: '2026-08-20'
+  breaking: false
+  fixes:
+  - 'Fixed a rare issue where advertising identifiers could be missing from the install
+    event on deeplink installs.'
+- version: 4.11.1
+  stream: Android SDK
+  date: '2026-08-10'
+  breaking: false
+  fixes:
+  - Improved SDK initialization and teardown stability.
+- version: 4.11.0
+  stream: Android SDK
+  date: '2026-08-03'
+  breaking: false
+  additions:
+  - Added device uuid update timestamp to event payload.
+  - Added support for the server-managed event block list.
+  fixes:
+  - Renamed appStorePackageName to appMarketPackageName in event payload.
+  - Improved stability of native signature generation.
+- version: 2.28.1
+  stream: Android SDK
+  date: '2026-07-31'
+  breaking: false
+  important: true
+  highlights:
+  - 'Maintenance release on the deprecated v2 line. Fixes PT_GNU_RELRO alignment so Google
+    Play Console stops warning about 16 KB page size; v2.28.0 users are told to update.'
+- version: 4.10.0
+  stream: Android SDK
+  date: '2026-06-04'
+  breaking: false
+  additions:
+  - 'Added handleDeferredDeeplink(apps, onSuccess, onFailure) overload for multi-app
+    deferred deeplink resolution.'
+  fixes:
+  - Improved lifecycle event collection.
+  - Improved deeplink handling to exclude non-trackable deeplinks from Expo development client.

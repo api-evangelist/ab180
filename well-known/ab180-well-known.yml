@@ -1,0 +1,333 @@
+generated: '2026-09-05'
+method: probed
+source: 'Direct HTTP probe of the named /.well-known path list against every host this
+  record knows: the registrable domains airbridge.io and ab180.co (+ www), the API host
+  api.airbridge.io, the docs host help.airbridge.io, the MCP host mcp.airbridge.io, the
+  dashboard host app.airbridge.io and the SDK distribution host sdk-download.airbridge.io.'
+summary:
+  hosts_probed: 9
+  documents_saved: 3
+  hit_hosts:
+  - mcp.airbridge.io
+  - help.airbridge.io
+  catch_all_hosts:
+  - app.airbridge.io
+  note: 'Real hits are the three OAuth/OIDC discovery documents on mcp.airbridge.io
+    (RFC 8414, RFC 9728, OpenID Connect Discovery) and the A2A agent card on
+    help.airbridge.io (indexed here, saved under a2a/). No security.txt, api-catalog,
+    ai-plugin.json, apis.json, aauth-resource.json, ucp.json or acp.json is served on
+    any host.'
+hosts:
+- host: https://mcp.airbridge.io
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: ab180-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: ab180-oauth-protected-resource.json
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: ab180-openid-configuration.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 404
+- host: https://help.airbridge.io
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: ../a2a/ab180-agent-card.json
+  - path: /.well-known/agent-skills/airbridge/skill.md
+    status: 200
+    file: ../skills/ab180-airbridge.md
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 404
+- host: https://api.airbridge.io
+  path_echo_control: passed
+  note: 'All 404 responses are RFC 9457 application/problem+json documents, which is
+    itself evidence of the error format the API uses.'
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 404
+- host: https://airbridge.io
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 404
+- host: https://www.airbridge.io
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 404
+- host: https://app.airbridge.io
+  path_echo_control: failed
+  hit_count: 0
+  soft_404_control:
+    path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 200
+    note: 'The dashboard single-page app answers 200 with its HTML shell for every
+      /.well-known/* path, including a path that cannot exist. Every 200 on this host is
+      discarded and nothing was saved from it.'
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+  - path: /.well-known/openid-configuration
+    status: 200
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+  - path: /.well-known/api-catalog
+    status: 200
+  - path: /.well-known/ai-plugin.json
+    status: 200
+  - path: /.well-known/ucp.json
+    status: 200
+  - path: /.well-known/acp.json
+    status: 200
+  - path: /.well-known/aauth-resource.json
+    status: 200
+  - path: /.well-known/apis.json
+    status: 200
+  - path: /apis.json
+    status: 200
+  - path: /apis.yml
+    status: 200
+  - path: /.well-known/agent-card.json
+    status: 200
+  - path: /.well-known/agent.json
+    status: 200
+  - path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 200
+- host: https://sdk-download.airbridge.io
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 404
+- host: https://ab180.co
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 404
+- host: https://www.ab180.co
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ab180-negative-control-7f3ab91c.json
+    status: 404

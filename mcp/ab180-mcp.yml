@@ -1,0 +1,99 @@
+generated: '2026-09-05'
+method: searched
+status: published
+source: https://www.airbridge.io/en/product/airbridge-ai
+deployment:
+  mode: remote
+  endpoint: https://mcp.airbridge.io/mcp
+  auth: oauth
+  verified: probed
+  probe:
+    request: 'POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    www_authenticate: Bearer realm="External MCP Server"
+    body: '{"error":"unauthorized","error_description":"Missing or invalid authentication token"}'
+    fetched: '2026-09-05'
+  note: 'No local stdio package is published — Airbridge ships a hosted URL only, and its
+    own llms.txt instructs agents not to use API-key auth for MCP.'
+servers:
+- name: airbridge
+  title: Airbridge MCP
+  transport: streamable-http
+  url: https://mcp.airbridge.io/mcp
+  landing: https://mcp.airbridge.io/
+  auth:
+    scheme: oauth2.1
+    pkce: S256
+    dynamic_client_registration: https://mcp.airbridge.io/register
+    authorization_endpoint: https://mcp.airbridge.io/oauth/authorize
+    token_endpoint: https://mcp.airbridge.io/oauth/token
+    scopes:
+    - openid
+    - profile
+    - email
+    discovery:
+    - well-known/ab180-oauth-authorization-server.json
+    - well-known/ab180-oauth-protected-resource.json
+    - well-known/ab180-openid-configuration.json
+  purpose: 'Query Airbridge attribution and campaign performance data from Claude, ChatGPT,
+    Codex, Cursor or any MCP client — e.g. campaign performance by channel for a date
+    range, or creating a retention report.'
+  data_policy: 'Provider states no storage, no training, no sharing, and that PII access
+    is blocked for GDPR and CCPA compliance.'
+  tools: []
+  tools_note: 'The live tools/list is auth-gated (HTTP 401). Airbridge publishes no tool
+    manifest in its llms.txt or product docs, so no tool names could be recorded without
+    fabricating them. Input schemas require authenticated introspection.'
+- name: airbridge-help-center
+  title: Airbridge Help Center docs MCP
+  transport: streamable-http
+  url: https://help.airbridge.io/mcp
+  auth:
+    scheme: none
+  verified: probed
+  probe:
+    request: 'POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 200
+    fetched: '2026-09-05'
+  note: 'Anonymous documentation-search MCP server served by the Airbridge Help Center.
+    tools/list returned a real manifest with inputSchemas; the tools read documentation,
+    they do not call the Airbridge API.'
+  tools:
+  - name: search_airbridge_help_center
+    title: Search documentation
+    description: 'Search the Airbridge Help Center knowledge base for documentation, code
+      examples, API references and guides.'
+    input_schema:
+      type: object
+      required:
+      - query
+      properties:
+        query: {type: string, description: Search query}
+        language: {type: string, description: "Filter to a specific language code; defaults to 'en'"}
+    read_only: true
+  - name: query_docs_filesystem_airbridge_help_center
+    description: 'Read-only shell-like query over a virtualized in-memory filesystem
+      containing only the Airbridge Help Center documentation pages.'
+    input_schema:
+      type: object
+      required:
+      - command
+      properties:
+        command: {type: string}
+    read_only: true
+  - name: submit_feedback
+    title: Submit documentation feedback
+    description: Report a problem with a documentation page so the docs team can fix it.
+    input_schema:
+      type: object
+      required:
+      - path
+      - feedback
+      properties:
+        path: {type: string}
+        feedback: {type: string}
+    read_only: false
+crosswalk: null
+crosswalk_note: 'No tool crosswalk is emitted: Airbridge publishes no OpenAPI, so there
+  are no operationIds to bind MCP tools to, and the product MCP server''s own tool list is
+  auth-gated. A crosswalk here would be invented on both sides.'

@@ -1,0 +1,22 @@
+generated: '2026-09-05'
+method: searched
+source: https://help.airbridge.io/.well-known/agent-skills/airbridge/skill.md
+note: 'Provider-published Agent Skill, saved verbatim. It is declared by the A2A agent
+  card at https://help.airbridge.io/.well-known/agent-card.json. API Evangelist authored
+  none of this content and generated no additional skills, because Airbridge publishes
+  no OpenAPI to ground extra skills in.'
+skills:
+- file: ab180-airbridge.md
+  name: Airbridge
+  description: 'Setting up mobile app attribution and measurement, creating tracking links
+    for ad campaigns, integrating ad channels, configuring SDKs for event tracking,
+    analyzing campaign performance through reports, and implementing deep linking and
+    SKAdNetwork for iOS measurement.'
+  api: https://api.airbridge.io
+  method: searched
+  source: https://help.airbridge.io/.well-known/agent-skills/airbridge/skill.md
+  http_status: 200
+  content_type: text/markdown
+  operations: []
+  operations_note: 'The provider ships no OpenAPI, so there are no operationIds to bind.
+    The skill grounds itself on documented endpoints under https://api.airbridge.io.'

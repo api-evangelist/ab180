@@ -1,0 +1,66 @@
+generated: '2026-09-05'
+method: searched
+probe: true
+url: https://www.airbridge.io/en/information-security
+http_status: 200
+checked: '2026-09-05'
+note: 'Airbridge serves no trust.airbridge.io or security.airbridge.io host — trust.airbridge.io
+  resolves to the marketing site root. The information-security page is the trust surface,
+  and it names auditors and certificate identifiers rather than only claiming compliance.'
+certifications:
+- name: SOC 2 Type 2
+  auditor: Deloitte Anjin LLC
+  statement: 'Successfully completed the SOC 2 Type 2 examination in accordance with AICPA
+    and IAASB attestation standards.'
+- name: ISO/IEC 27001
+  version: '2013'
+  certifier: SGS
+- name: ISO/IEC 27017
+  version: '2015'
+  certifier: SGS
+- name: ISO/IEC 27018
+  version: '2019'
+  certifier: SGS
+- name: ISMS (KISA)
+  certificate_id: ISMS-KISA-2023-138
+  certifier: Korea Internet & Security Agency
+  statement: Certified after a rigorous audit of 80 items.
+privacy_regimes:
+- GDPR
+- CCPA
+- PIPL
+infrastructure:
+  cloud: AWS
+  primary_region: Tokyo (ap-northeast-1)
+  data_residency: 'Airbridge advertises data residency options for regional data processing
+    requirements, and announced an AWS Seoul region service for Korean regulatory and
+    security requirements.'
+  residency_source: https://www.airbridge.io/ko/blog/seoul-region-launch-data-compliance
+encryption:
+  in_transit: TLS 1.2 or higher
+  at_rest: AWS SSE-S3 (AES-256) for sensitive data
+  passwords: PBKDF2
+testing:
+  internal: 'Product penetration testing in accordance with the SDLC, plus regular internal
+    penetration tests.'
+  third_party: Annual third-party testing.
+  customer_testing_policy: 'Customers must not perform penetration testing or security
+    vulnerability checks against the Airbridge system without approval from the AB180
+    Security & Privacy Team.'
+vulnerability_disclosure:
+  published: false
+  note: 'No security.txt on any host, no bug bounty program (HackerOne / Bugcrowd /
+    Intigriti), and no security@ address or disclosure form is published. The page names an
+    "AB180 Security & Privacy Team" but gives no reporting channel. NO VulnerabilityDisclosure
+    or Security pointer is emitted for this provider, because the surface a researcher would
+    need does not exist.'
+evidence:
+- source: https://www.airbridge.io/en/information-security
+  keywords: [soc 2, iso 27001, iso 27017, iso 27018, isms, encryption, penetration testing]
+  http_status: 200
+- source: https://www.airbridge.io/en/solutions/security-privacy
+  keywords: [gdpr, ccpa, pipl, data residency, skan]
+  http_status: 200
+- source: https://trust.airbridge.io/
+  result: 'Redirects to https://www.airbridge.io/en — no dedicated trust host.'
+  http_status: 200

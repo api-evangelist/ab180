@@ -48,6 +48,12 @@ apis:
   tags:
   - Attribution
   - Tracking Links
+  - Event
+  - Reporting
+  - Raw Data
+  tags_raw:
+  - Attribution
+  - Tracking Links
   - Events
   - Reporting
   - Raw Data

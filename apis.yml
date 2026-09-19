@@ -16,6 +16,9 @@ x-source: harvest:secondary-market
 specificationVersion: '0.20'
 created: '2026-09-05'
 modified: '2026-09-05'
+x-docs-platform: mintlify
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-17
 x-enrichment:
   date: '2026-09-05'
   status: enriched

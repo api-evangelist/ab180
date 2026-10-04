@@ -36,6 +36,7 @@ tags:
 - Mobile
 - Reporting
 - South Korea
+- A2A
 apis:
 - aid: ab180:airbridge-api
   name: Airbridge API
@@ -173,3 +174,10 @@ common:
   url: security/ab180-domain-security.yml
 - type: DataModel
   url: data-model/ab180-data-model.yml
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://help.airbridge.io/.well-known/agent-card.json"
+  grade: "conformant"
+  protocol_version: "0.3"
+  control: 404
